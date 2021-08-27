@@ -2,15 +2,20 @@
     kind: Pod
     metadata:
       name: maria
+      labels:
+        name: maria
     spec:
       containers:
         - name: maria
           image: mariadb
-          ports:
-            - mariadb-port: 3306
+          ports:                              
+            - containerPort: 3306
+              protocol: TCP
           envFrom:
            - secretRef:
                 name: mysql-user-secret
+           - configMapRef:
+              name: maria-configmap
           volumeMounts:
           - mountPath: "/var/lib/mysql"
             name: mariavolume
