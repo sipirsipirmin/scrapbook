@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: wordpress-configmap
 data:
-  WORDPRESS_DB_HOST: maria-service
-  WORDPRESS_DB_USER: root
+  WORDPRESS_DB_HOST: maria-service:2021
+  WORDPRESS_DB_USER: wordpress
   WORDPRESS_DB_NAME: wordpress
 
