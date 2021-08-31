@@ -6,6 +6,7 @@ spec:
   selector:
     name: wordpress
   sessionAffinity: ClientIP
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 8888
