@@ -8,5 +8,5 @@ spec:
   sessionAffinity: ClientIP
   ports:
     - protocol: TCP
-      port: 5002
+      port: 8888
       targetPort: 80
