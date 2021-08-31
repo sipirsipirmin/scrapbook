@@ -18,10 +18,9 @@
               name: maria-configmap
           volumeMounts:
           - mountPath: "/var/lib/mysql"
-            name: mariavolume
+            name: maria-volume
       nodeSelector:
         type: db
       volumes:
-        - name: mariavolume
-          persistentVolumeClaim:
-            claimName: mariaclaim
+        - name: maria-volume
+          emptyDir: {}
