@@ -1,0 +1,5 @@
+- hosts: localhost
+  roles:
+    - { role: roles/etcd-backupper }
+    - { role: roles/etcd-installer }
+    - { role: roles/post-etcd-works }

@@ -1,0 +1,20 @@
+# - name: get namespace keys from restored etcd
+#   shell: kubectl run --image sipirsipirmin/backer:v1 -n etcd my-etcd-client-v1 --restart=Never  --command -- /bin/sh -c 'ETCDCTL_API=3 etcdctl --endpoints etcd-service.etcd:5001 get /registry/namespaces --prefix --keys-only'
+  
+
+- name: Create backupper pod
+  kubernetes.core.k8s:
+    state: present
+    template: 'etcd-client.yaml.j2'
+    wait: true
+    wait_condition:
+      reason: PodCompleted
+      type: ContainersReady
+      status: False
+
+- name: get logs from etcd client pod
+  shell: kubectl logs my-etcd-client-v1 -n etcd
+  register: namespaces_out
+
+- debug: msg="{{ namespaces_out.stdout_lines }}"
+  

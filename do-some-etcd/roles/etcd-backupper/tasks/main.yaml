@@ -1,0 +1,9 @@
+# - name: creater backupper pod
+#   shell: kubectl apply -f ./roles/etcd-backupper/templates/backupperPod.yaml
+
+- name: Create backupper pod
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    template: 'backupperPod.yaml.j2'
+    apply: true

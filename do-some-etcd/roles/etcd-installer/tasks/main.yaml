@@ -1,0 +1,16 @@
+- name: Create etcd namespace
+  community.kubernetes.k8s:
+    name: etcd
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Create backupper pod
+  kubernetes.core.k8s:
+    state: present
+    template: 'etcd.yaml.j2'
+
+- name: cretate NodePort for etcd
+  kubernetes.core.k8s:
+    state: present
+    template: 'service.yaml.j2'
