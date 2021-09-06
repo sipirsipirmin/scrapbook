@@ -6,4 +6,8 @@
     state: present
     namespace: default
     template: 'backupperPod.yaml.j2'
-    apply: true
+    wait: true
+    wait_condition:
+      reason: PodCompleted
+      type: ContainersReady
+      status: False
