@@ -44,6 +44,10 @@
       persistence:
         enabled: true
         existingClaim: app-pvc
+      ingress:
+        enabled: true
+      nextcloud:
+        host: app.example.com
 
 
 - name: Create network policy for app

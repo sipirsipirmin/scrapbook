@@ -6,6 +6,11 @@
     state: present
 
 
+# if configmap exist, it crashes
+- name: create configmap for squid.conf
+  shell: kubectl create configmap proxy-config --from-file roles/proxy/templates/squid.conf -n proxy
+
+
 - name: Create squid pod
   kubernetes.core.k8s:
     state: present
@@ -16,9 +21,6 @@
       type: Ready
       status: True
 
-
-- name: create configmap for squid.conf
-  shell: kubectl create configmap proxy-config --from-file roles/app/proxy/templates/squid.conf -n proxy
 
 - name: Create squid service
   kubernetes.core.k8s:
