@@ -1,0 +1,53 @@
+- name: Add nextcloud helm repo
+  community.kubernetes.helm_repository:
+    name: nextcloud
+    repo_url: https://nextcloud.github.io/helm/
+
+- name: Create app namespace
+  community.kubernetes.k8s:
+    name: app
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Create app-pv PersistenVolume
+  kubernetes.core.k8s:
+    state: present
+    namespace: app
+    template: 'pv.yaml.j2'
+
+
+- name: Create app-pvc PersistenVolumeClaim
+  kubernetes.core.k8s:
+    state: present
+    namespace: app
+    template: 'pvc.yaml.j2'
+
+
+- name: Deploy latest version of Nexcloud
+  community.kubernetes.helm:
+    name: nextcloud
+    chart_ref: nextcloud/nextcloud
+    release_namespace: app
+    values:
+      podLabels:
+        app: poc
+      internalDatabase:
+        enabled: false
+      externalDatabase:
+        enabled: true
+        type: mysql
+        database: nextcloud
+        host: db-service.db:2000
+        user: root
+        password: toor 
+      persistence:
+        enabled: true
+        existingClaim: app-pvc
+
+
+- name: Create network policy for app
+  kubernetes.core.k8s:
+    state: present
+    namespace: app
+    template: 'net-policy.yaml.j2'

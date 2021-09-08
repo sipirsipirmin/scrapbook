@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    name: squid
+  name: squid
+  namespace: proxy
+spec:
+  containers:
+  - # command: ["squid"]
+    # args: ["-c", "etcdctl --endpoints=localhost:2379 --cacert=/var/lib/minikube/certs/etcd/ca.crt --key=/var/lib/minikube/certs/etcd/server.key  --cert=/var/lib/minikube/certs/etcd/server.crt snapshot save ff.db && mv ff.db /tmp/backs/ff.db"]
+    image: datadog/squid
+    name: squid
+    resources: {}
+    volumeMounts:
+    - name: proxy-config-volume
+      mountPath: /etc/squid/squid.conf
+      subPath: squid.conf
+  volumes:
+  - configMap: 
+      name: proxy-config
+    name: proxy-config-volume
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}

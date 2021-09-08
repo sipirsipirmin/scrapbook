@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squid-service
+  namespace: proxy
+spec:
+  type: NodePort
+  selector:
+    name: squid
+  ports:
+    - protocol: TCP
+      port: 5001
+      targetPort: 3128
+      nodePort: 30007

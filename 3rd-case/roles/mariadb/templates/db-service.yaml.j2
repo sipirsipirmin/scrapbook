@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: db
+  name: db-service
+spec:
+  selector:
+    app.kubernetes.io/name: mariadb
+  ports:
+    - protocol: TCP
+      port: 2000
+      targetPort: mysql
+  type: LoadBalancer
+# status:
+#   loadBalancer:
+#     ingress:
+#     - ip: 192.0.2.127

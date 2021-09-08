@@ -1,0 +1,38 @@
+- name: Add a bitnami helm repo
+  community.kubernetes.helm_repository:
+    name: bitnami
+    repo_url: "https://charts.bitnami.com/bitnami"
+
+
+- name: Deploy latest version of Mariadb
+  community.kubernetes.helm:
+    name: mariadb
+    chart_ref: bitnami/mariadb
+    release_namespace: db
+    create_namespace: true
+    wait: true
+    values:
+      auth:
+        rootPassword: toor
+        database: nextcloud
+    
+    
+- name: Create db service
+  kubernetes.core.k8s:
+    state: present
+    namespace: db
+    template: 'db-service.yaml.j2'
+  
+
+- name: Deny all comminication
+  kubernetes.core.k8s:
+    state: present
+    namespace: db
+    template: 'deny-all-policy.yaml.j2'
+
+
+- name: Create network policy for db service
+  kubernetes.core.k8s:
+    state: present
+    namespace: db
+    template: 'net-policy.yaml.j2'

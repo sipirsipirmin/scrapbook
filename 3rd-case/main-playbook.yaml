@@ -1,0 +1,5 @@
+- hosts: localhost
+  roles:
+    - { role: roles/mariadb }
+    - { role: roles/app }
+    - { role: roles/proxy }

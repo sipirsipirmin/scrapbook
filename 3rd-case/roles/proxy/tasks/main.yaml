@@ -1,0 +1,28 @@
+- name: Create proxy namespace
+  community.kubernetes.k8s:
+    name: proxy
+    api_version: v1
+    kind: Namespace
+    state: present
+
+
+- name: Create squid pod
+  kubernetes.core.k8s:
+    state: present
+    namespace: proxy
+    template: 'squid.yaml.j2'
+    wait: true
+    wait_condition:
+      type: Ready
+      status: True
+
+
+- name: create configmap for squid.conf
+  shell: kubectl create configmap proxy-config --from-file roles/app/proxy/templates/squid.conf -n proxy
+
+- name: Create squid service
+  kubernetes.core.k8s:
+    state: present
+    namespace: proxy
+    template: 'squid-service.yaml.j2'
+
